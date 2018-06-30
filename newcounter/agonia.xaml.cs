@@ -66,13 +66,13 @@ namespace newcounter
         public agonia()
         {
             this.InitializeComponent();
-            
+
         }
 
-      
 
- 
-      
+
+
+
         private void clear_Click(object sender, RoutedEventArgs e)
         {
             sumagonia1.Text = "0";
@@ -93,51 +93,55 @@ namespace newcounter
         int flag = 0;
         private void add_Click(object sender, RoutedEventArgs e)
         {
-            if (agonia1.Text != " " && agonia2.Text != " ")
+
+            if (int.TryParse(agonia1.Text, out number1))
             {
-                number1 = int.Parse(agonia1.Text);
-                number2 = int.Parse(agonia2.Text);
                 flag = 1;
             }
-            else if (agonia1.Text != " ")
+            else
             {
-                number1 = int.Parse(agonia1.Text);
-                flag = 1;
-            }
-            else if (agonia2.Text != " ")
-            {
-                number2 = int.Parse(agonia2.Text);
-                flag = 1;
-            }
-            else if (agonia1.Text == " " && agonia2.Text ==" ")
-            {
+                agonia1.Text = "Δώστε έναν έγκυρο αριθμό";
                 flag = 0;
+                return;
             }
+
+            if (int.TryParse(agonia2.Text, out number2))
+            {
+                flag = 1;
+            }
+            else
+            {
+                agonia2.Text = "Δώστε έναν έγκυρο αριθμό";
+                flag = 0;
+                return;
+            }            
+
             sum1 = sum1 + number1;
             sum2 = sum2 + number2;
             sumagonia1.Text = Convert.ToString(sum1);
             sumagonia2.Text = Convert.ToString(sum2);
             agonia1.Text = "0";
             agonia2.Text = "0";
-            if(sum1>=51)
+
+            if (sum1 >= 51)
             {
                 result.Text = "Team 2 wins!";
                 agonia1.IsEnabled = false;
                 agonia2.IsEnabled = false;
             }
-            else if (sum2>=51)
+            else if (sum2 >= 51)
             {
                 result.Text = "Team 1 wins!";
                 agonia1.IsEnabled = false;
                 agonia2.IsEnabled = false;
             }
-            else if (sum1==51 && sum2==51)
+            else if (sum1 == 51 && sum2 == 51)
             {
                 result.Text = "Ισοπαλία!";
                 agonia1.IsEnabled = false;
                 agonia2.IsEnabled = false;
             }
-            
+
         }
 
         private void undo_Click(object sender, RoutedEventArgs e)
@@ -168,26 +172,26 @@ namespace newcounter
                 }
                 flag = 0;
             }
-            
-        
+
+
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
 
-            
+
             Sum();
             IMobileServiceTable<newcountertable> countertable = App.MobileService.GetTable<newcountertable>();
             try
             {
-                
+
                 newcountertable obj = new newcountertable();
                 obj.agoniateam1 = sumagonia1.Text;
                 obj.agoniateam2 = sumagonia2.Text;
                 obj.id = "ag";
                 countertable.UpdateAsync(obj);
 
-                
+
             }
             catch (Exception x)
             {
@@ -197,9 +201,9 @@ namespace newcounter
 
         private void load_Click(object sender, RoutedEventArgs e)
         {
-            
-                Default_Load();
-            
+
+            Default_Load();
+
         }
 
         public async void Default_Load()
@@ -208,7 +212,7 @@ namespace newcounter
             try
             {
                 var counterTable = App.MobileService.GetTable<newcountertable>();
-                var result = await counterTable.Where(x => x.id !="").ToListAsync();
+                var result = await counterTable.Where(x => x.id != "").ToListAsync();
                 var item = result.FirstOrDefault();
                 sumagonia1.Text = item.agoniateam1;
                 sumagonia2.Text = item.agoniateam2;
@@ -229,7 +233,7 @@ namespace newcounter
                 var counterTable = App.MobileService.GetTable<newcountertable>();
                 var result = await counterTable.Where(x => x.id != "").ToListAsync();
                 var item = result.FirstOrDefault();
-               
+
                 sum1 = int.Parse(item.agoniateam1);
                 sum2 = int.Parse(item.agoniateam2);
             }
@@ -240,6 +244,6 @@ namespace newcounter
 
         }
 
-        
+
     }
 }
