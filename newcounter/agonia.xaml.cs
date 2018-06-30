@@ -148,23 +148,23 @@ namespace newcounter
         {
             if (flag == 1)
             {
-                if (sumagonia1.Text != " ")
+                if (!string.IsNullOrEmpty(sumagonia1.Text))
                 {
                     sum1 = sum1 - number1;
 
-                    sumagonia1.Text = Convert.ToString(sum1);
+                    sumagonia1.Text = sum1.ToString();
 
                 }
                 else
                 {
                     sumagonia1.Text = "0";
                 }
-                if (sumagonia2.Text != " ")
+                if (!string.IsNullOrEmpty(sumagonia2.Text))
                 {
 
                     sum2 = sum2 - number2;
 
-                    sumagonia2.Text = Convert.ToString(sum2);
+                    sumagonia2.Text = sum2.ToString();
                 }
                 else
                 {
